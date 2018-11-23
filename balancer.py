@@ -43,7 +43,7 @@ def before_index_request():
 
 
 @app.after_request
-def after_product(response):
+def after_index_request(response):
     global SERVER_COUNTER
     SERVER_COUNTER += 1
     return response
