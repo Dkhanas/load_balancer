@@ -26,15 +26,21 @@ def get_next_server():
 
     try:
         response = requests.get(url=u'http://{}:{}'.format(IP, PORTS[SERVER_COUNTER]))
-        return 'Response server {}:{} at {}'.format(IP, PORTS[SERVER_COUNTER], response.text)
-
+        if response.status_code < 400:
+            return 'Response server {}:{} at {}'.format(IP, PORTS[SERVER_COUNTER], response.text)
+        else:
+            return clean_servers()
     except ConnectionError:
-        delete_server(PORTS[SERVER_COUNTER])
-        check_data()
-        return get_next_server()
+        return clean_servers()
 
     except IndexError:
         return 'No available services'
+
+
+def clean_servers():
+    delete_server(PORTS[SERVER_COUNTER])
+    check_data()
+    return get_next_server()
 
 
 @app.before_request
