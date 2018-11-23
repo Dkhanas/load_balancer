@@ -8,6 +8,7 @@ from utils import delete_server, get_servers_data
 app = Flask(__name__)
 
 SERVER_COUNTER = 0
+IP = '127.0.0.1'
 
 
 def check_data():
@@ -24,8 +25,8 @@ def get_next_server():
     global SERVER_COUNTER
 
     try:
-        response = requests.get(url=u'http://127.0.0.1:{}'.format(PORTS[SERVER_COUNTER]))
-        return response.text
+        response = requests.get(url=u'http://{}:{}'.format(IP, PORTS[SERVER_COUNTER]))
+        return 'Response server {}:{} at {}'.format(IP, PORTS[SERVER_COUNTER], response.text)
 
     except ConnectionError:
         delete_server(PORTS[SERVER_COUNTER])
